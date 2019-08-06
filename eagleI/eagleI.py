@@ -1,6 +1,7 @@
 import numpy as np
 import h5py
 import glob
+import re
 
 import schwimmbad
 from functools import partial
@@ -13,6 +14,8 @@ def read_hdf5(f,dataset):
     return dat
 
 
+def sortKeyFunc(s):
+    return int(re.findall("(\d+)",s)[-2])
 
 
 def get_files(fileType,directory,tag):
@@ -26,32 +29,70 @@ def get_files(fileType,directory,tag):
     """
 
     if fileType in ['FOF','FOF_PARTICLES']:
-      return glob.glob("%s/groups_%s/group_tab_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/groups_%s/group_tab_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SNIP_FOF','SNIP_FOF_PARTICLES']:
-      return glob.glob("%s/groups_snip_%s/group_snip_tab_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/groups_snip_%s/group_snip_tab_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SUBFIND','SUBFIND_GROUP','SUBFIND_IDS']:
-      return glob.glob("%s/groups_%s/eagle_subfind_tab_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/groups_%s/eagle_subfind_tab_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SNIP_SUBFIND','SNIP_SUBFIND_GROUP','SNIP_SUBFIND_IDS']:
-      return glob.glob("%s/groups_snip_%s/eagle_subfind_snip_tab_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/groups_snip_%s/eagle_subfind_snip_tab_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SNIP']:
-      return glob.glob("%s/snipshot_%s/snip_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/snipshot_%s/snip_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SNAP']:
-      return glob.glob("%s/snapshot_%s/snap_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/snapshot_%s/snap_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['PARTDATA']:
-      return glob.glob("%s/particledata_%s/eagle_subfind_particles_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/particledata_%s/eagle_subfind_particles_%s*.hdf5"%(directory,tag,tag))
     elif fileType in ['SNIP_PARTDATA']:
-      return glob.glob("%s/particledata_snip_%s/eagle_subfind_snip_particles_%s*.hdf5"%(directory,tag,tag))
+      files = glob.glob("%s/particledata_snip_%s/eagle_subfind_snip_particles_%s*.hdf5"%(directory,tag,tag))
     else:
       ValueError("Type of files not supported")
 
+    return sorted(files, key=lambda x:int(re.findall("(\d+)",x)[-2]))
 
-# see line 326 here https://github.com/christopherlovell/readEagle3/blob/master/readEagle.cpp
-# def apply_physicalUnits_conversion():
-# def apply_hfreeUnits_conversion():
+
+
+def apply_physicalUnits_conversion(f,dataset,dat,verbose=True):
+    """
+
+    Args:
+        f (str)
+        dat (array)
+    """
+    with h5py.File(f,'r') as hf:
+        exponent = hf[dataset].attrs['aexp-scale-exponent']
+        a = hf['Header'].attrs['ExpansionFactor']
+
+    if exponent != 0.:
+        if verbose: print("Converting to physical units. (Multiplication by a^%f, a=%f"%(exponent,a))
+        return dat * pow(a,exponent) 
+    else:
+        if verbose: print("Converting to physical units. No conversion needed!")
+        return dat
+
+
+
+def apply_hfreeUnits_conversion(f,dataset,dat,verbose=True):
+    """
+
+    Args:
+        f (str)
+        dat (array)
+    """
+    with h5py.File(f,'r') as hf:
+        exponent = hf[dataset].attrs['h-scale-exponent']
+        h = hf['Header'].attrs['HubbleParam']
+
+    if exponent != 0.:
+        if verbose: print("Converting to h-free units. (Multiplication by h^%f, h=%f"%(exponent,h))
+        return dat * pow(h,exponent) 
+    else:
+        if verbose: print("Converting to h-free units. No conversion needed!")
+        return dat
+
 # def apply_CGSUnits_conversion():
 
 
-def read_array(ftype,directory,tag,dataset,numThreads=1):
+def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=False,verbose=True):
     """
    
     Args:
@@ -60,6 +101,8 @@ def read_array(ftype,directory,tag,dataset,numThreads=1):
         tag (str)
         dataset (str)
         numThreads (int)
+        noH (bool)
+        physicalUnits (bool)
     """
     
     files = get_files(ftype,directory,tag)
@@ -73,7 +116,15 @@ def read_array(ftype,directory,tag,dataset,numThreads=1):
 
 
     lg = partial(read_hdf5, dataset=dataset)
-    return np.hstack(list(pool.map(lg,files)))
+    dat = np.hstack(list(pool.map(lg,files)))
+
+    if noH: 
+        dat = apply_hfreeUnits_conversion(files[0],dataset,dat,verbose=verbose)
+
+    if physicalUnits: 
+        dat = apply_physicalUnits_conversion(files[0],dataset,dat,verbose=verbose)
+
+    return dat
 
 
 if __name__== "__main__": 
@@ -81,7 +132,7 @@ if __name__== "__main__":
     directory = '/cosma5/data/Eagle/ScienceRuns/Planck1/L0050N0752/PE/S15_AGNdT9/data'
     tag = '003_z008p988'
 
-    mstar = read_array('SUBFIND',directory,tag,"/Subhalo/Stars/Mass",numThreads=1)
+    mstar = read_array('SUBFIND',directory,tag,"/Subhalo/Stars/Mass",numThreads=1,verbose=True)
     print(mstar.shape)
     print(mstar[:10])
     
