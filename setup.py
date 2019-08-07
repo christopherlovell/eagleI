@@ -4,14 +4,14 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="eagleIO",
+    name="eagle_IO",
     version="0.0.1",
     author="Christopher Lovell",
     author_email="c.lovell@herts.ac.uk",
     description="Read EAGLE HDF5 files with multithreading",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/christopherlovell/eagleIO",
+    url="https://github.com/christopherlovell/eagle_IO",
     packages=setuptools.find_packages(),
     classifiers=[
         "Programming Language :: Python :: 3",
