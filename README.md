@@ -1,9 +1,9 @@
 # [eagle_IO](https://eagle-io.readthedocs.io/en/latest/)
-read eagle HDF5 with native, multithreaded python.
+read [EAGLE](http://icc.dur.ac.uk/Eagle/) HDF5 with native, multithreaded python.
 
 ## Dependencies
 
-eagle_IO depends on `h5py`, [`schwimmbad`](https://schwimmbad.readthedocs.io/en/latest/index.html), and `numpy`
+eagle_IO depends on [`h5py`](http://docs.h5py.org/en/stable/quick.html), [`schwimmbad`](https://schwimmbad.readthedocs.io/en/latest/index.html), and `numpy`
 
 ## [Documentation](https://eagle-io.readthedocs.io/en/latest/)
 
