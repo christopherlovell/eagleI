@@ -3,27 +3,33 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to eagle_IO's documentation!
+.. toctree::
+   :maxdepth: 2
+
+
+eagle_IO
 ====================================
 
+Reading EAGLE HDF5 files in native Python, with optional multithreading
+
 :Author: Christopher Lovell
-:Version: $Revision: 0.0.1 $
+:Version: 0.0.1
 
 .. contents::
-
 
 
 Reading data
 ------------
 
-The module offers two functions. One to read attributes and one to read arrays::
+The module offers one main function, :code:`read_array`:
+
+.. code-block:: python
 
   import eagle as E
- 
-  z = E.readAttribute(fileType,  directory,  tag,   attribute)
+
   M_200 = E.readArray(fileType,  directory,  tag,   array)
 
-Both routines are constructed in the same way and need to be supplied with the same 4 arguments. The first one is a string describing the type of file and data read. The allowed values of this parameter are: 
+:code:`read_array` accepts 4 arguments; the first is a string describing the type of file and data read. The allowed values are: 
 
 =======================  ===============================================  ==============================================================
 Value                    Description                                      Example of data that can be read
@@ -50,7 +56,7 @@ The second argument is the location of the directory containing the data. For in
 
   "/cosma5/data/Eagle/ScienceRuns/Planck1/L0100N1504/PE/EagleReference/data/"
 
-The third argument is the “tag” of the output. This is the part of the filename that contains the snapshot number and the redshift. For the 29 main output times, the values are: 
+The third argument is the “tag” of the output. This is the part of the filename that contains the snapshot number and the redshift. For the 29 main output times in the fiducial periodic volumes, the values are: 
 
   “000_z020p000”	“001_z015p132”	“002_z009p993”	“003_z008p988”
   “004_z008p075”	“005_z007p050”	“006_z005p971”	“007_z005p487”
@@ -69,11 +75,11 @@ or::
 
   "/PartType5/BH_TimeLastmerger"
 
-The routine returns a numpy array containing the values extracted from the files. The order of the elements is preserved and the type of the values is the same than stored in the HDF5 files.
+The routine returns a numpy array containing the values extracted from the files. The order of the elements is preserved and the type of the values is the same as that stored in the HDF5 files.
 
+ To read the value of :math:`M_200` for all halos at :math:`z=1.5` in the reference volume, one would use:
 
-
- To read the value of M_200 for all halos at redshift 1.5 in the reference run, one would hence use::
+.. code-block:: python
 
   import eagle_IO as E
  
@@ -86,7 +92,9 @@ The routine returns a numpy array containing the values extracted from the files
 Unit conversion
 ---------------
 
-By default, the readArray function converts the data read from the file into “h free” physical units. This is done by reading the relevant conversion factors from the HDF5 file. The conversions applied to the data are reported by the function and printed to the standard output. This behaviour can be modified using the two optional parameters noH and physicalUnits. If noH is set to False then the routine does not apply any h factor correction. If physicalUnits is set to False then no a-factor correction is applied. Running with “noH=False, physicalUnits=False” will hence read in the data as it is in the file without applying any correction. For instance, reading the particle coordinates at redshift 1 with this code::
+By default, the :code:`read_array` function converts the data read from the file into “h free” physical units. This is done by reading the relevant conversion factors from the HDF5 file. If :code:`verbose` is :code:`True`, the conversions applied to the data are reported by the function and printed to the standard output. This behaviour can be modified using the two optional parameters :code:`noH` and :code:`physicalUnits`. If :code:`noH` is set to :code:`False` then the routine does not apply any h factor correction. If :code:`physicalUnits` is set to :code:`False` then no a-factor correction is applied. Running with :code:`noH=False, physicalUnits=False` will hence read in the data as it is in the file without applying any correction. For instance, reading the particle coordinates at :math:`z=1` with this code:
+
+.. code-block:: python
 
   pos = E.read_array("SUBFIND_GROUP", sim, tag, "FOF/Group_R_Crit500", noH=True, physicalUnits=True)
 
@@ -95,4 +103,11 @@ will yield::
   Converting to physical units. (Multiplication by a^1, a=1)
   Converting to h-free units. (Multiplication by h^-1, h=0.6777)
 
-This relies on the fact that the units written in the file are correct. Always check that this is the case by looking at the standard output !!
+**This relies on the fact that the units written in the file are correct. Always check that this is the case by looking at the standard output!!**
+
+
+Future Development
+------------------
+
+- read attributes function
+- tests for file existence, file ordering etc.
