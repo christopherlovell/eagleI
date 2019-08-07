@@ -46,7 +46,7 @@ SNIP_SUBFIND_PARTICLES   IDs of the particles in a subhalo (snipshot)     Partic
 
 
 
- The second argument is the location of the directory containing the data. For instance::
+The second argument is the location of the directory containing the data. For instance::
 
   "/cosma5/data/Eagle/ScienceRuns/Planck1/L0100N1504/PE/EagleReference/data/"
 
@@ -61,11 +61,11 @@ The third argument is the “tag” of the output. This is the part of the filen
   “025_z000p271”	“026_z000p183”	“027_z000p101”	“028_z000p000”
 
 
-The last argument is the name of the array or attribute to be read. For instance:
+The last argument is the name of the array or attribute to be read. For instance::
 
   "/PartType4/Metallicity"
 
-or
+or::
 
   "/PartType5/BH_TimeLastmerger"
 
