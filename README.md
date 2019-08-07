@@ -10,3 +10,8 @@ eagle_IO depends on [`h5py`](http://docs.h5py.org/en/stable/quick.html), [`schwi
 The documentation is on Read the docs [here](https://eagle-io.readthedocs.io/en/latest/).
 
 ![eagle snake](https://i.pinimg.com/474x/3f/5a/c3/3f5ac3b395d7222d4658b3dff7b92a27--tattoo-eagle-tattoo-ink.jpg)
+
+
+## Change log
+
+- 0.0.1: added unit conversions
