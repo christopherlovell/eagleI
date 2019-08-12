@@ -116,7 +116,11 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
 
 
     lg = partial(read_hdf5, dataset=dataset)
-    dat = np.hstack(list(pool.map(lg,files)))
+    dat = list(pool.map(lg,files))
+    if len(dat) > 0:
+        dat = np.hstack(dat)
+    else:
+        return np.array([])
 
     if noH: 
         dat = apply_hfreeUnits_conversion(files[0],dataset,dat,verbose=verbose)
