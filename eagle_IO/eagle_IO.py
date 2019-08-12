@@ -122,7 +122,7 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
     
     stop = timeit.default_timer()
     
-    print ("Reading in '{}' for z = {} using {} thread(s) took {}s".format(dataset, np.round(read_attr(ftype,directory,tag,dataset='Redshift'), 3), numThreads, np.round(stop - start,6)))
+    print ("Reading in '{}' for z = {} using {} thread(s) took {}s".format(dataset, np.round(read_header(ftype,directory,tag,dataset='Redshift'), 3), numThreads, np.round(stop - start,6)))
     
     if noH: 
         dat = apply_hfreeUnits_conversion(files[0],dataset,dat,verbose=verbose)
