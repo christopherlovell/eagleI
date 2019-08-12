@@ -153,7 +153,7 @@ if __name__== "__main__":
     directory = '/cosma5/data/Eagle/ScienceRuns/Planck1/L0050N0752/PE/S15_AGNdT9/data'
     tag = '003_z008p988'
     
-    z = read_attr('SUBFIND', directory, tag, 'Redshift')
+    z = read_header('SUBFIND', directory, tag, 'Redshift')
     mstar = read_array('SUBFIND',directory,tag,"/Subhalo/Stars/Mass",numThreads=1,verbose=True)
     print(mstar.shape)
     print(mstar[:10])
