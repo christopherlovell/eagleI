@@ -2,6 +2,7 @@ import numpy as np
 import h5py
 import glob
 import re
+import timeit
 
 import schwimmbad
 from functools import partial
@@ -9,8 +10,9 @@ from functools import partial
 
 def read_hdf5(f,dataset):
     with h5py.File(f,'r') as hf:
+        
         dat = np.array(hf.get(dataset))
-
+        if dat.ndim==0: return np.array([])
     return dat
 
 
@@ -83,7 +85,7 @@ def apply_hfreeUnits_conversion(f,dataset,dat,verbose=True):
         h = hf['Header'].attrs['HubbleParam']
 
     if exponent != 0.:
-        if verbose: print("Converting to h-free units. (Multiplication by h^%f, h=%f"%(exponent,h))
+        if verbose: print("Converting to h-free units. (Multiplication by h^%f, h=%f)"%(exponent,h))
         return dat * pow(h,exponent) 
     else:
         if verbose: print("Converting to h-free units. No conversion needed!")
@@ -104,9 +106,10 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
         noH (bool)
         physicalUnits (bool)
     """
+    start = timeit.default_timer()
     
     files = get_files(ftype,directory,tag)
-
+    
     if numThreads == 1:
         pool = schwimmbad.SerialPool() 
     elif numThreads == -1:
@@ -114,28 +117,48 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
     else:
         pool = schwimmbad.MultiPool(processes=numThreads)
 
-
     lg = partial(read_hdf5, dataset=dataset)
     dat = list(pool.map(lg,files))
     if len(dat) > 0:
-        dat = np.hstack(dat)
+        dat = np.concatenate(dat, axis=0)
     else:
         return np.array([])
-
+    
+    stop = timeit.default_timer()
+    
+    print ("Reading in '{}' for z = {} using {} thread(s) took {}s".format(dataset, np.round(read_header(ftype,directory,tag,dataset='Redshift'), 3), numThreads, np.round(stop - start,6)))
+    
+>>>>>>> 38177433648345adead453867f3946b97abf4f2a
     if noH: 
         dat = apply_hfreeUnits_conversion(files[0],dataset,dat,verbose=verbose)
 
     if physicalUnits: 
         dat = apply_physicalUnits_conversion(files[0],dataset,dat,verbose=verbose)
-
     return dat
 
+def read_header(ftype,directory,tag,dataset):
+    """
+   
+    Args:
+        ftype (str)
+        directory (str)
+        tag (str)
+        dataset (str)
+    """
+    
+    files = get_files(ftype,directory,tag)
+    f = h5py.File(files[0], 'r')
+        
+    return f['Header'].attrs[dataset]
+    
+    
 
 if __name__== "__main__": 
 
     directory = '/cosma5/data/Eagle/ScienceRuns/Planck1/L0050N0752/PE/S15_AGNdT9/data'
     tag = '003_z008p988'
-
+    
+    z = read_attr('SUBFIND', directory, tag, 'Redshift')
     mstar = read_array('SUBFIND',directory,tag,"/Subhalo/Stars/Mass",numThreads=1,verbose=True)
     print(mstar.shape)
     print(mstar[:10])
