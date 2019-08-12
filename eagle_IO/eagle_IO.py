@@ -131,8 +131,7 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
         dat = apply_physicalUnits_conversion(files[0],dataset,dat,verbose=verbose)
     return dat
 
-def read_hdr(ftype,directory,tag,dataset):
-
+def read_header(ftype,directory,tag,dataset):
     """
    
     Args:
