@@ -13,11 +13,8 @@ def read_hdf5(f,dataset):
         
         dat = np.array(hf.get(dataset))
         if dat.ndim==0: return np.array([])
+    
     return dat
-
-
-def sortKeyFunc(s):
-    return int(re.findall("(\d+)",s)[-2])
 
 
 def get_files(fileType,directory,tag):
