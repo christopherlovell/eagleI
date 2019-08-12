@@ -118,17 +118,12 @@ def read_array(ftype,directory,tag,dataset,numThreads=1,noH=False,physicalUnits=
         pool = schwimmbad.MultiPool(processes=numThreads)
 
     lg = partial(read_hdf5, dataset=dataset)
-    dat = list(pool.map(lg,files))
-    if len(dat) > 0:
-        dat = np.concatenate(dat, axis=0)
-    else:
-        return np.array([])
+    dat = np.concatenate(list(pool.map(lg,files)), axis=0)
     
     stop = timeit.default_timer()
     
     print ("Reading in '{}' for z = {} using {} thread(s) took {}s".format(dataset, np.round(read_header(ftype,directory,tag,dataset='Redshift'), 3), numThreads, np.round(stop - start,6)))
     
->>>>>>> 38177433648345adead453867f3946b97abf4f2a
     if noH: 
         dat = apply_hfreeUnits_conversion(files[0],dataset,dat,verbose=verbose)
 
