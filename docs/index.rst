@@ -3,20 +3,19 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-
-
-
 eagle_IO
 ====================================
-
-Reading EAGLE HDF5 files in native Python, with optional multithreading
 
 :Author: Christopher Lovell
 :Version: 0.0.1
 
+Reading EAGLE HDF5 files in native Python, with optional multithreading.
+
+See below for tutorials, as well as a description of each of the output properties.
+
 .. toctree::
    :maxdepth: 2
-   :caption: properties
+   :caption: Tutorials
 
    tutorial/reading_data
    tutorial/unit_conversion
@@ -25,7 +24,7 @@ Reading EAGLE HDF5 files in native Python, with optional multithreading
 
 .. toctree::
    :maxdepth: 2
-   :caption: properties
+   :caption: Properties
 
    properties/snapshots
    properties/fof
