@@ -6,6 +6,10 @@
 .. toctree::
    :maxdepth: 2
 
+   properties/snapshots
+   properties/fof
+   properties/subfind
+
 
 eagle_IO
 ====================================
