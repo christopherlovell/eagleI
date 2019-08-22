@@ -13,7 +13,7 @@ def read_hdf5(f,dataset):
         
         dat = np.array(hf.get(dataset))
         if dat.ndim==0: return np.array([])
-    hf.close()
+
     return dat
 
 
@@ -60,7 +60,6 @@ def apply_physicalUnits_conversion(f,dataset,dat,verbose=True):
     with h5py.File(f,'r') as hf:
         exponent = hf[dataset].attrs['aexp-scale-exponent']
         a = hf['Header'].attrs['ExpansionFactor']
-    hf.close()
     
     if exponent != 0.:
         if verbose: print("Converting to physical units. (Multiplication by a^%f, a=%f)"%(exponent,a))
@@ -81,7 +80,6 @@ def apply_hfreeUnits_conversion(f,dataset,dat,verbose=True):
     with h5py.File(f,'r') as hf:
         exponent = hf[dataset].attrs['h-scale-exponent']
         h = hf['Header'].attrs['HubbleParam']
-    hf.close()
     
     if exponent != 0.:
         if verbose: print("Converting to h-free units. (Multiplication by h^%f, h=%f)"%(exponent,h))
@@ -144,7 +142,6 @@ def read_header(ftype,directory,tag,dataset):
     files = get_files(ftype,directory,tag)
     with h5py.File(files[0],'r') as hf:
         hdr = hf['Header'].attrs[dataset]
-    hf.close()
         
     return hdr
     
