@@ -39,6 +39,9 @@ Contributors
 License & Attribution
 ---------------------
 
+Copyright 2019 Christopher Lovell and contributors.
+
+eagle_IO is free software made available under the MIT License. For details see the LICENSE.
 
 Changelog
 ---------
