@@ -6,8 +6,7 @@
 eagle_IO
 ====================================
 
-:Author: Christopher Lovell
-:Version: 0.0.1
+:Version: 0.0.2
 
 Reading EAGLE HDF5 files in native Python, with optional multithreading.
 

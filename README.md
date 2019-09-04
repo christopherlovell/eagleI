@@ -1,11 +1,11 @@
-# [eagle_IO](https://eagle-io.readthedocs.io/en/latest/)
+# eagle_IO
 read [EAGLE](http://icc.dur.ac.uk/Eagle/) HDF5 with native, multithreaded python.
 
 ## Dependencies
 
 eagle_IO depends on [`h5py`](http://docs.h5py.org/en/stable/quick.html), [`schwimmbad`](https://schwimmbad.readthedocs.io/en/latest/index.html), and `numpy`
 
-## [Documentation](https://eagle-io.readthedocs.io/en/latest/)
+## Documentation
 
 The documentation is on Read the docs [here](https://eagle-io.readthedocs.io/en/latest/).
 
@@ -14,4 +14,5 @@ The documentation is on Read the docs [here](https://eagle-io.readthedocs.io/en/
 
 ## Change log
 
+- 0.0.2: added CGS unit conversions
 - 0.0.1: added unit conversions
