@@ -20,8 +20,8 @@ SNIP_FOF                 FoF group informations (snipshot)                Group 
 SNIP_FOF_PARTICLES       IDs of the particles in a FOF group (snipshot)   Particle IDs
 PARTDATA                 Particles that are in a FOF group                Particle Mass, velocity, entropy, stellar age
 SNIP_PARTDATA            Particles that are in a FOF group (snipshot)     Particle Mass, velocity, entropy, stellar age
-SNAPSHOT                 Full information about all particles             Particle Mass, velocity, entropy, stellar age
-SNIPSHOT                 Reduced information about all particles          Mass, velocity
+SNAP                     Full information about all particles             Particle Mass, velocity, entropy, stellar age
+SNIP                     Reduced information about all particles          Mass, velocity
 SUBFIND                  Subhalo information                              Subhalo mass, subhalo centre of potential
 SUBFIND_GROUP            Subfind halo information                         Group centre of potential, M_200, R_500
 SUBFIND_PARTICLES        IDs of the particles in a subhalo                Particle IDs
