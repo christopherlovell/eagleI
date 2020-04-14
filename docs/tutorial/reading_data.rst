@@ -7,7 +7,7 @@ The module offers one main function, :code:`read_array`:
 
   import eagle as E
 
-  M_200 = E.readArray(fileType,  directory,  tag,   array)
+  M_200 = E.read_array(fileType,  directory,  tag,   array)
 
 :code:`read_array` accepts 4 arguments; the first is a string describing the type of file and data read. The allowed values are:
 
