@@ -34,9 +34,9 @@ def get_files(fileType, directory, tag):
         files = glob.glob("%s/groups_%s/eagle_subfind_tab_%s*.hdf5" % (directory, tag, tag))
     elif fileType in ['SNIP_SUBFIND', 'SNIP_SUBFIND_GROUP', 'SNIP_SUBFIND_IDS']:
         files = glob.glob("%s/groups_snip_%s/eagle_subfind_snip_tab_%s*.hdf5" % (directory, tag, tag))
-    elif fileType in ['SNIP']:
+    elif fileType in ['SNIP','SNIPSHOT']:
         files = glob.glob("%s/snipshot_%s/snip_%s*.hdf5" % (directory, tag, tag))
-    elif fileType in ['SNAP']:
+    elif fileType in ['SNAP','SNAPSHOT']:
         files = glob.glob("%s/snapshot_%s/snap_%s*.hdf5" % (directory, tag, tag))
     elif fileType in ['PARTDATA']:
         files = glob.glob("%s/particledata_%s/eagle_subfind_particles_%s*.hdf5" % (directory, tag, tag))
@@ -138,7 +138,11 @@ def read_array(ftype, directory, tag, dataset, numThreads=1, noH=False, physical
         pool = schwimmbad.MultiPool(processes=numThreads)
 
     lg = partial(read_hdf5, dataset=dataset)
-    dat = np.concatenate(list(pool.map(lg, files)), axis=0)
+    #dat = np.concatenate(list(pool.map(lg, files)),axis=0)
+    dat = list(pool.map(lg, files))
+    #print([d.shape for d in dat])
+    #dat = [d for d in dat if d.shape[0] != 0]
+    dat = np.concatenate(dat, axis=0)
     pool.close()
 
     stop = timeit.default_timer()
