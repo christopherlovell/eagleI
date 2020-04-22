@@ -138,11 +138,12 @@ def read_array(ftype, directory, tag, dataset, numThreads=1, noH=False, physical
         pool = schwimmbad.MultiPool(processes=numThreads)
 
     lg = partial(read_hdf5, dataset=dataset)
-    #dat = np.concatenate(list(pool.map(lg, files)),axis=0)
     dat = list(pool.map(lg, files))
-    #print([d.shape for d in dat])
-    #dat = [d for d in dat if d.shape[0] != 0]
+
+    # ignore files with no data
+    dat = [d for d in dat if d.shape[0] != 0]
     dat = np.concatenate(dat, axis=0)
+
     pool.close()
 
     stop = timeit.default_timer()
