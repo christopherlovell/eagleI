@@ -43,7 +43,7 @@ def get_files(fileType, directory, tag):
     elif fileType in ['SNIP_PARTDATA']:
         files = glob.glob("%s/particledata_snip_%s/eagle_subfind_snip_particles_%s*.hdf5" % (directory, tag, tag))
     else:
-        ValueError("Type of files not supported")
+        raise ValueError("Type of files not supported")
 
     return sorted(files, key=lambda x: int(re.findall("(\d+)", x)[-2]))
 

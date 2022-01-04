@@ -2,8 +2,8 @@
 import eagle_IO.eagle_IO as Eio
 import eagle as E
 
-directory = '/cosma5/data/Eagle/ScienceRuns/Planck1/L0050N0752/PE/S15_AGNdT9/data'
-tag = '003_z008p988'
+directory = '/cosma7/data/dp004/dc-love2/data/G-EAGLE/geagle_0010/data' #'/cosma5/data/Eagle/ScienceRuns/Planck1/L0050N0752/PE/S15_AGNdT9/data'
+tag = '002_z013p000' #'003_z008p988'
 N = 10
 
 files = Eio.get_files('SUBFIND',directory,tag)

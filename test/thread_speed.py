@@ -11,6 +11,7 @@ tag = '003_z008p988'
 def speed_test(threads=1):
     start = time.time()
     
+    smass = E.read_array('SNAP',directory,tag,"/PartType4/Mass",numThreads=threads,noH=True,physicalUnits=True)
     mstar = E.read_array('SUBFIND',directory,tag,"/Subhalo/Stars/Mass",numThreads=threads,noH=True,physicalUnits=True)
     
     end = time.time()
