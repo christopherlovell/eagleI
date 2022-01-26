@@ -5,7 +5,7 @@ The module offers one main function, :code:`read_array`:
 
 .. code-block:: python
 
-  import eagle as E
+  import eagle_IO.eagle_IO as E
 
   M_200 = E.read_array(fileType,  directory,  tag,   array)
 
@@ -59,7 +59,7 @@ The routine returns a numpy array containing the values extracted from the files
 
 .. code-block:: python
 
-  import eagle_IO as E
+  import eagle_IO.eagle_IO as E
 
   sim = "/cosma5/data/Eagle/ScienceRuns/Planck1/L0100N1504/PE/EagleReference/data/"
   tag = "017_z001p487"
