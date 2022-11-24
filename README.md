@@ -1,9 +1,17 @@
 # eagle_IO
 read [EAGLE](http://icc.dur.ac.uk/Eagle/) HDF5 with native, multithreaded python.
 
-## Dependencies
+## installation
+
+### Dependencies
 
 eagle_IO depends on [`h5py`](http://docs.h5py.org/en/stable/quick.html), [`schwimmbad`](https://schwimmbad.readthedocs.io/en/latest/index.html), and `numpy`
+
+### Instructions
+
+Clone the repo, cd into the directory, and run the following (with your python environment loaded):
+
+`python setup.py install`
 
 ## Documentation
 
