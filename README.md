@@ -1,5 +1,5 @@
 # eagle_IO
-read [EAGLE](http://icc.dur.ac.uk/Eagle/) HDF5 with native, multithreaded python.
+read [EAGLE](http://icc.dur.ac.uk/Eagle/) HDF5 files with pure, multithreaded Python.
 
 ## installation
 

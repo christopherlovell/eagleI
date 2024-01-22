@@ -140,6 +140,9 @@ def read_array(ftype, directory, tag, dataset, numThreads=1, noH=False, physical
     lg = partial(read_hdf5, dataset=dataset)
     dat = list(pool.map(lg, files))
 
+    # get indices of non-empty arrays
+    non_empty_file_indices = [i for i, d in enumerate(dat) if d.shape[0] != 0]
+
     # ignore files with no data
     dat = [d for d in dat if d.shape[0] != 0]
     dat = np.concatenate(dat, axis=0)
@@ -150,16 +153,19 @@ def read_array(ftype, directory, tag, dataset, numThreads=1, noH=False, physical
 
     if verbose:
         print("Reading in '{}' for z = {} using {} thread(s) took {}s".format(dataset,
-                                                                          np.round(read_header(ftype, directory, tag, dataset='Redshift'), 3),
-                                                                          numThreads, np.round(stop - start, 6)))
+              np.round(read_header(ftype, directory, tag, dataset='Redshift'), 3),
+              numThreads, np.round(stop - start, 6)))
 
     if noH:
-        dat = apply_hfreeUnits_conversion(files[0], dataset, dat, verbose=verbose)
+        dat = apply_hfreeUnits_conversion(files[non_empty_file_indices[0]],
+                                          dataset, dat, verbose=verbose)
 
     if physicalUnits:
-        dat = apply_physicalUnits_conversion(files[0], dataset, dat, verbose=verbose)
+        dat = apply_physicalUnits_conversion(files[non_empty_file_indices[0]],
+                                             dataset, dat, verbose=verbose)
     if CGS:
-        dat = apply_CGSUnits_conversion(files[0], dataset, dat, verbose=verbose)
+        dat = apply_CGSUnits_conversion(files[non_empty_file_indices[0]],
+                                        dataset, dat, verbose=verbose)
     return dat
 
 
