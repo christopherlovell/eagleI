@@ -22,6 +22,6 @@ The documentation is on Read the docs [here](https://eagle-io.readthedocs.io/en/
 
 ## Change log
 
-- 0.0.3: fixed but for missing datasets during unit conversion
+- 0.0.3: fixed bug for missing datasets during unit conversion
 - 0.0.2: added CGS unit conversions
 - 0.0.1: added unit conversions
